@@ -523,6 +523,10 @@ function ($compile, $parse, $document, $position, dateFilter, dateParser, datepi
         }
       }
       ngModel.$parsers.unshift(parseDate);
+      // https://github.com/angular-ui/bootstrap/pull/2733/files
+      ngModel.$formatters.push(function (value) {
+        return ngModel.$isEmpty(value) ? value : dateFilter(value, dateFormat);
+      });
 
       // Inner change
       scope.dateSelection = function(dt) {
@@ -544,9 +548,9 @@ function ($compile, $parse, $document, $position, dateFilter, dateParser, datepi
         });
       });
 
-      // Outter change
+      // Outer change
       ngModel.$render = function() {
-        var date = ngModel.$viewValue ? dateFilter(ngModel.$viewValue, dateFormat) : '';
+        var date = ngModel.$viewValue ? dateFilter(parseDate(ngModel.$viewValue), dateFormat) : '';
         element.val(date);
         scope.date = parseDate( ngModel.$modelValue );
       };
