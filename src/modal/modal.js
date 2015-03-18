@@ -243,11 +243,18 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.transition'])
         var modal;
 
         if (evt.which === 27) {
+          closeOnKeydown('escape key press');
+        }
+        if (evt.which === 8) {
+          closeOnKeydown('backspace key press');
+        }
+
+        function closeOnKeydown(dismissMessage) {
           modal = openedWindows.top();
           if (modal && modal.value.keyboard) {
             evt.preventDefault();
-            $rootScope.$apply(function () {
-              $modalStack.dismiss(modal.key, 'escape key press');
+            $rootScope.$apply(function() {
+              $modalStack.dismiss(modal.key, dismissMessage);
             });
           }
         }

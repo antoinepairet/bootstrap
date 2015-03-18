@@ -197,6 +197,18 @@ describe('$modal', function () {
       expect($document).toHaveModalsOpen(0);
     });
 
+    it('should support closing on BACKSPACE', function () {
+
+      var modal = open({template: '<div>Content</div>'});
+      expect($document).toHaveModalsOpen(1);
+
+      triggerKeyDown($document, 8);
+      $timeout.flush();
+      $rootScope.$digest();
+
+      expect($document).toHaveModalsOpen(0);
+    });
+
     it('should support closing on backdrop click', function () {
 
       var modal = open({template: '<div>Content</div>'});
